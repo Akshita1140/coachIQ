@@ -1,29 +1,32 @@
-# Welcome to your Lovable project
+# CoachIQ (JavaScript)
 
-This project was built with [Lovable](https://lovable.dev).
+Warm, mentor-like AI coach for exam & interview prep. Vite + React + Firebase Auth.
 
-## Build with Lovable
+## Setup
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+```bash
+npm install       # or: bun install / pnpm install
+cp .env.example .env   # fill in Firebase + optional backend URL
 npm run dev
 ```
 
-## Built with
+## What to plug in
 
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+**Firebase (Google sign-in)** — Firebase console → create Web app → copy config into `.env`. In Authentication → Sign-in method, enable Google. Add your dev domain (e.g. `localhost`) to authorized domains.
+
+**Express backend** — set `VITE_API_BASE_URL` to your API root. If unset, the app runs on local mock responses so the full journey (login → home → 6 questions → recap) works end-to-end.
+
+Endpoints expected:
+
+- `POST /api/generate-questions` — body `{ mode, topic, difficulty, index, history }` → `{ id, prompt, difficulty }`
+- `POST /api/evaluate-answer` — body `{ question, answer, mode, topic }` → `{ score (1–10), strengths[], gaps[], resource: {title, url}, nextDifficulty }`
+
+Requests include `Authorization: Bearer <firebase-id-token>` when signed in.
+
+## Screens
+
+1. **Login** — Google sign-in gate
+2. **Home** — pick Topic or Interview + enter subject/role
+3. **Session** — 6-question adaptive journey with progress checkpoints
+4. **Feedback** — per-question score, strengths, gaps, resource
+5. **Recap** — overall score, growth arc, resources, restart
