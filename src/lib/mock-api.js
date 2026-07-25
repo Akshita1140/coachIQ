@@ -64,3 +64,34 @@ export async function mockEvaluate(question, answer) {
       : question.difficulty,
   };
 }
+
+export async function mockLearningPath(topic, gaps) {
+  await wait(400);
+  const label = (topic || "this subject").trim();
+  const islands = [
+    {
+      step: 1,
+      title: `${label} fundamentals`,
+      description: "Build a rock-solid grasp of the core definitions and mental models before layering on complexity.",
+      platform: "Khan Academy",
+      resourceUrl: `https://www.khanacademy.org/search?page_search_query=${encodeURIComponent(label + " fundamentals")}`,
+    },
+    {
+      step: 2,
+      title: `Applying ${label} to real problems`,
+      description: "Practice using these concepts on concrete examples so they stick beyond definitions.",
+      platform: "freeCodeCamp",
+      resourceUrl: `https://www.freecodecamp.org/news/search/?query=${encodeURIComponent(label + " practice")}`,
+    },
+    {
+      step: 3,
+      title: `${label} — deeper trade-offs`,
+      description: gaps?.length
+        ? `Focus specifically on: ${gaps[0]}`
+        : "Explore edge cases and nuanced trade-offs to move from competent to confident.",
+      platform: "YouTube",
+      resourceUrl: `https://www.youtube.com/results?search_query=${encodeURIComponent(label + " advanced explained")}`,
+    },
+  ];
+  return { islands };
+}

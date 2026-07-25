@@ -1,5 +1,5 @@
 import { getFirebaseAuth } from "./firebase.js";
-import { mockEvaluate, mockGenerateQuestion } from "./mock-api.js";
+import { mockEvaluate, mockGenerateQuestion, mockLearningPath } from "./mock-api.js";
 
 const BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -31,6 +31,17 @@ export async function evaluateAnswer(params) {
     body: JSON.stringify(params),
   });
   if (!res.ok) throw new Error(`evaluate-answer failed: ${res.status}`);
+  return res.json();
+}
+
+export async function generateLearningPath(params) {
+  if (!BASE) return mockLearningPath(params.topic, params.gaps);
+  const res = await fetch(`${BASE}/api/generate-learning-path`, {
+    method: "POST",
+    headers: await authHeaders(),
+    body: JSON.stringify(params),
+  });
+  if (!res.ok) throw new Error(`generate-learning-path failed: ${res.status}`);
   return res.json();
 }
 
