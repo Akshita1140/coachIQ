@@ -65,6 +65,35 @@ export async function mockEvaluate(question, answer) {
   };
 }
 
+export async function mockMentorAvailability() {
+  await wait(300);
+  // Fabricate a handful of open slots over the next few days so the UI
+  // is fully testable without real Google Calendar credentials.
+  const slots = [];
+  const now = new Date();
+  for (let day = 1; day <= 4; day++) {
+    for (const hour of [11, 14, 16.5]) {
+      const start = new Date(now);
+      start.setDate(start.getDate() + day);
+      start.setHours(Math.floor(hour), hour % 1 ? 30 : 0, 0, 0);
+      const end = new Date(start.getTime() + 30 * 60 * 1000);
+      slots.push({ start: start.toISOString(), end: end.toISOString() });
+    }
+  }
+  return { slots };
+}
+
+export async function mockScheduleMentorSession({ start, end }) {
+  await wait(500);
+  return {
+    eventId: `mock_${Date.now()}`,
+    meetLink: "https://meet.google.com/mock-demo-link",
+    calendarLink: "https://calendar.google.com/",
+    start,
+    end,
+  };
+}
+
 export async function mockLearningPath(topic, gaps) {
   await wait(400);
   const label = (topic || "this subject").trim();

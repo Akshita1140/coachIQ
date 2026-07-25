@@ -1,5 +1,11 @@
 import { getFirebaseAuth } from "./firebase.js";
-import { mockEvaluate, mockGenerateQuestion, mockLearningPath } from "./mock-api.js";
+import {
+  mockEvaluate,
+  mockGenerateQuestion,
+  mockLearningPath,
+  mockMentorAvailability,
+  mockScheduleMentorSession,
+} from "./mock-api.js";
 
 const BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -42,6 +48,29 @@ export async function generateLearningPath(params) {
     body: JSON.stringify(params),
   });
   if (!res.ok) throw new Error(`generate-learning-path failed: ${res.status}`);
+  return res.json();
+}
+
+export async function getMentorAvailability() {
+  if (!BASE) return mockMentorAvailability();
+  const res = await fetch(`${BASE}/api/mentor-availability`, {
+    headers: await authHeaders(),
+  });
+  if (!res.ok) throw new Error(`mentor-availability failed: ${res.status}`);
+  return res.json();
+}
+
+export async function scheduleMentorSession(params) {
+  if (!BASE) return mockScheduleMentorSession(params);
+  const res = await fetch(`${BASE}/api/schedule-mentor-session`, {
+    method: "POST",
+    headers: await authHeaders(),
+    body: JSON.stringify(params),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || `schedule-mentor-session failed: ${res.status}`);
+  }
   return res.json();
 }
 

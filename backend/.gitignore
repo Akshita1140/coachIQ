@@ -1,3 +1,4 @@
 node_modules/
 .env
 *.log
+echo "backend/convert-key.cjs" >> .gitignore

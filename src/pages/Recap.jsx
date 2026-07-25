@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ExternalLink, Palmtree, RotateCcw, Sparkles, TrendingDown, TrendingUp } from "lucide-react";
 import AppHeader from "../components/AppHeader.jsx";
+import MentorScheduler from "../components/MentorScheduler.jsx";
 import { useSession } from "../lib/session-store.js";
 import { generateLearningPath } from "../lib/api.js";
 
@@ -199,17 +200,7 @@ export default function Recap() {
           <p className="p" style={{ fontSize: 14, margin: "8px 0 16px" }}>
             A 1:1 conversation with a mentor can help you close gaps faster than practicing alone.
           </p>
-          <motion.a
-            href="https://calendly.com/your-mentor-link"
-            target="_blank"
-            rel="noreferrer"
-            className="btn btn-primary"
-            style={{ width: "fit-content", textDecoration: "none" }}
-            whileHover={{ y: -1 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            Connect with a mentor
-          </motion.a>
+          <MentorScheduler topic={topic || (mode === "topic" ? undefined : "interview prep")} />
         </motion.div>
 
         <motion.div

@@ -6,6 +6,8 @@ import { groqRateLimiter } from "./rateLimiter.js";
 import generateQuestionsRoute from "./routes/generateQuestions.js";
 import evaluateAnswerRoute from "./routes/evaluateAnswer.js";
 import generateLearningPathRoute from "./routes/generateLearningPath.js";
+import mentorAvailabilityRoute from "./routes/mentorAvailability.js";
+import scheduleMentorSessionRoute from "./routes/scheduleMentorSession.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -31,6 +33,8 @@ app.get("/health", (req, res) => {
 app.use("/api/generate-questions", requireAuth, groqRateLimiter, generateQuestionsRoute);
 app.use("/api/evaluate-answer", requireAuth, groqRateLimiter, evaluateAnswerRoute);
 app.use("/api/generate-learning-path", requireAuth, groqRateLimiter, generateLearningPathRoute);
+app.use("/api/mentor-availability", requireAuth, mentorAvailabilityRoute);
+app.use("/api/schedule-mentor-session", requireAuth, scheduleMentorSessionRoute);
 
 app.listen(PORT, () => {
   console.log(`CoachIQ backend listening on port ${PORT}`);

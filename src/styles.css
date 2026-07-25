@@ -281,6 +281,7 @@ a { color: var(--coach-accent-light); }
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
+.spin { animation: spin 0.9s linear infinite; }
 
 /* ---------- Scrollbar polish ---------- */
 ::selection { background: rgba(124, 58, 237, 0.35); }

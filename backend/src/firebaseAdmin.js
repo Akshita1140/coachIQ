@@ -5,22 +5,32 @@ let initialized = false;
 function initFirebaseAdmin() {
   if (initialized) return;
 
-  const raw = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
-  if (!raw) {
+  const projectId = process.env.FIREBASE_PROJECT_ID;
+  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+  const privateKeyRaw = process.env.FIREBASE_PRIVATE_KEY;
+
+  if (!projectId || !clientEmail || !privateKeyRaw) {
     console.warn(
-      "[firebaseAdmin] FIREBASE_SERVICE_ACCOUNT_JSON is not set. " +
-        "Auth verification will fail until this is configured."
+      "[firebaseAdmin] Missing one or more required env vars " +
+        "(FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY). " +
+        "Auth verification will fail until these are configured."
     );
     return;
   }
 
-  const serviceAccount = JSON.parse(raw);
+  // Convert literal "\n" text (from env var) into real newlines for the PEM key
+  const privateKey = privateKeyRaw.replace(/\\n/g, "\n").trim();
 
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert({
+      projectId,
+      clientEmail,
+      privateKey,
+    }),
   });
 
   initialized = true;
+  console.log("[firebaseAdmin] Initialized successfully for project:", projectId);
 }
 
 /**
