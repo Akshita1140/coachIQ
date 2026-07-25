@@ -7,6 +7,8 @@ import "./styles.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+    <div className="aurora-bg" aria-hidden="true" />
+    <div className="grain-overlay" aria-hidden="true" />
     <BrowserRouter>
       <AuthProvider>
         <App />
