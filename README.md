@@ -71,6 +71,28 @@ Most exam/interview prep tools give you static question banks and no real feedba
 
 ---
 
+## Tech stack
+
+![CoachIQ tech stack](./tech-stack.png)
+
+## Database
+
+**There isn't one — the app is intentionally stateless, for now.**
+
+- Student identity is handled entirely by Firebase Auth (no user profile table).
+- Questions, answers, and scores are generated per-request and held in React state on the frontend — a refresh mid-session loses progress.
+- Mentor availability and bookings use **Google Calendar as the source of truth** — `freebusy.query` reads existing events, `events.insert` writes new ones. No separate slots/bookings table exists.
+
+**Why no database yet:** for a hackathon-scope MVP, the priority was proving the core loop — adaptive questions, real-time evaluation, and mentor booking — end-to-end, without the overhead of schema design, migrations, or hosting a DB. Google Calendar already acts as a "database" for scheduling, and React state is enough to demo a single session.
+
+**Future integration:** the plan is to add **Firestore** (natural fit since the project already runs on Firebase) to support:
+- Persisting session history so users can resume or review past sessions
+- Tracking progress/scores over time per user, to show real improvement trends
+- A leaderboard or streaks across users
+- Storing mentor session history (who booked what, with notes/outcomes) instead of relying solely on Calendar events
+
+---
+
 ## Project structure
 
 ```
