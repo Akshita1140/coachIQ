@@ -4,6 +4,7 @@ import AppHeader from "../components/AppHeader.jsx";
 import JourneyProgress from "../components/JourneyProgress.jsx";
 import { SESSION_LENGTH, useSession } from "../lib/session-store.js";
 import { evaluateAnswer, generateQuestion } from "../lib/api.js";
+import { useSpeechToText } from "../lib/useSpeechToText.js";
 
 export default function Session() {
   const nav = useNavigate();
@@ -15,6 +16,10 @@ export default function Session() {
   const [loading, setLoading] = useState(false);
   const [answer, setAnswer] = useState("");
   const [showFeedback, setShowFeedback] = useState(false);
+
+  const { isListening, isSupported, start, stop, error: speechError } = useSpeechToText({
+    onResult: (text) => setAnswer((prev) => prev + text),
+  });
 
   const index = questions.length - (showFeedback ? 1 : 0);
   const currentQuestion = questions[showFeedback ? questions.length - 1 : questions.length - 1];
@@ -73,6 +78,23 @@ export default function Session() {
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
             />
+            {isSupported && (
+              <div className="row" style={{ alignItems: "center", gap: 8 }}>
+                <button
+                  type="button"
+                  className={`btn ${isListening ? "btn-accent" : ""}`}
+                  onClick={isListening ? stop : start}
+                  style={{ fontSize: 13 }}
+                >
+                  {isListening ? "🎙️ Listening… tap to stop" : "🎤 Speak your answer"}
+                </button>
+                {speechError && (
+                  <span className="p" style={{ fontSize: 12, color: "var(--coach-muted)" }}>
+                    Mic error: {speechError}. Try typing instead.
+                  </span>
+                )}
+              </div>
+            )}
             <div className="row" style={{ justifyContent: "flex-end" }}>
               <button className="btn btn-primary" onClick={submit} disabled={loading || !answer.trim()}>
                 {loading ? "Reviewing…" : "Submit answer"}
