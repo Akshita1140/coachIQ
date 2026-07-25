@@ -73,7 +73,20 @@ Most exam/interview prep tools give you static question banks and no real feedba
 
 ## Tech stack
 
-![CoachIQ tech stack](./tech-stack.png)
+| Layer | Technology | Purpose |
+|---|---|---|
+| Frontend | React | UI components & state |
+| Frontend | Vite | Dev server & bundler |
+| Frontend | JavaScript (ESM) | App logic |
+| Frontend | CSS | Styling (`styles.css`) |
+| Backend | Node.js | Runtime |
+| Backend | Express | REST API & routing |
+| Backend | Gen AI logic | Question generation + answer evaluation |
+| Auth | Firebase Auth | Google sign-in, student identity |
+| Auth | Firebase Admin SDK | Verifies ID tokens server-side |
+| Integration | Google Calendar API | `freebusy` lookups + event creation |
+| Integration | Google OAuth2 | Mentor-side refresh token (server acts as mentor) |
+| Integration | Google Meet | Auto-generated video link on booking |
 
 ## Database
 
@@ -91,7 +104,6 @@ Most exam/interview prep tools give you static question banks and no real feedba
 - A leaderboard or streaks across users
 - Storing mentor session history (who booked what, with notes/outcomes) instead of relying solely on Calendar events
 
----
 
 ## Project structure
 
