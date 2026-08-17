@@ -12,7 +12,7 @@ export function getGroqClient() {
   return client;
 }
 
-const MODEL = "llama-3.3-70b-versatile";
+const MODEL = "openai/gpt-oss-120b";
 
 /**
  * Calls Groq's chat completion and returns parsed JSON.
